@@ -1,0 +1,73 @@
+//GA program for cognitive science
+#include<iostream>
+using namespace std;
+int main()
+{
+	//creating a parent chromosome array
+	//and filling it with random numbers till 50
+	int parent[10][4];
+	int fitness[10];
+	int crossover[10][4];
+	//calculating the absolute of w3+x3 and y3+z3
+	cout<<"*******************\n"<<"Fitness array: \n";
+	for(int a=0;a<10;a++)
+	{
+		int l= parent[a][0]*parent[a][0]*parent[a][0]+parent[a][1]*parent[a][1]*parent[a][1];
+		int m= parent[a][2]*parent[a][2]*parent[a][2]+parent[a][3]*parent[a][3]*parent[a][3];
+		fitness[a]=abs(l-m);
+		cout<<fitness[a]<<"\n";
+	}
+	/*
+	//calculating the min fit
+	int minfit=fitness[0];
+	for(int x=0;x<10;x++)
+	{
+		if(fitness[x]<minfit)
+			minfit=fitness[x];
+
+	}
+	 //finding the chromosome with fitness = 0;
+	//for(int a=0;a<10;a++)
+	{
+		if(fitness[a]==0 ||fitness[a]==minfit )
+		{	
+			if(parent[a][0]==parent[a][1]==parent[a][2]==parent[a][3] || 
+			(parent[a][0]==parent[a][3] && parent[a][1]==parent[a][2]) || 
+			(parent[a][0]==parent[a][2] && parent[a][1]==parent[a][3]))
+			{
+				cout<<"No right fit\n";
+			}
+			else
+			{
+				cout<<"fitvalue is \t"<<fitness[a]<<" and\n";
+				cout<<"correspoding array is: "<<parent[a][0]<<" "<<parent[a][1]<<" "<<parent[a][2]<<" "<<parent[a][3]<<"\n";
+			}
+		}
+	}*/
+/*	//crossover the population
+	for(int k=0;k<5;k++)
+	{
+		int cross = rand() % 10 + 5;
+		crossover[k][0]=parent[k][0];
+		crossover[k][1]=parent[k][1];
+		crossover[k][2]=parent[cross][2];
+		crossover[k][3]=parent[cross][3];
+		crossover[cross][0]=parent[cross][0];
+		crossover[cross][1]=parent[cross][1];
+		crossover[cross][2]=parent[k][2];
+		crossover[cross][3]=parent[k][3];
+
+	}*/
+	getchar();
+}
+int fillchromosome(int parent[10][4])
+{
+	for (int i=0;i<10;i++)
+	{
+		for(int j=0;j<4;j++)
+		{
+			parent[i][j] = rand()% 7;
+			cout<<parent[i][j]<<",";
+		}
+		cout<<"\n";
+}

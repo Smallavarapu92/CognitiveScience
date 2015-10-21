@@ -1,0 +1,218 @@
+/*********************************************************************************
+   Name		:Sudha Mallavarapu
+   Professor	:Dr.Tina Johnson
+   Class		:Cognitive Science
+   Program	:This program uses Diophantine equation,w3 + x3 = y3 + z3
+		 to find the best fit chromosome in lesser than or equal to
+		 100000 generations
+   Input		:2D array of size [100][4] filled with random numbers between 1 to 49
+   Output		:Fitness value and the BestFit array
+*/
+
+//*******************************************************************************
+
+#include<iostream>
+#include<time.h>
+using namespace std;
+
+// This class just prints the introduction in the output screen
+void introduction()
+{
+	cout<<"\n***************************\n";
+	cout<<"\nName\t\t:Sudha Mallavarapu";
+	cout<<"\nProfessor\t:Dr.Tina Johnson";
+	cout<<"\nClass\t\t:Cognitive Science";
+	cout<<"\nProgram:";
+	cout<<"\n\t\tThis program uses Diophantine equation,w3 + x3 = y3 + z3,"
+		<<"\n\t\tto find the best fit chromosome in less than or equal to "
+		<<"\n\t\t100000 generations\n";
+	cout<<"\nImplementation\t:The implementation is done using 1D or 2D arrays";
+	cout<<"\n\nInput\t\t:A 2D array of size [100][4] filled with random numbers between\n\t\t 1 to 49";
+	cout<<"\n\nExpected Output\t:Fitness value which is minimum and the corresponding chromosome";
+	cout<<"\n\n***************************\n";
+	cout<<"\n\nActual Output:";
+}
+
+//This function is used for filling parent chromosomes with random numbers
+int fillParent(int parent[100][4])
+{
+	for (int i=0;i<100;i++)
+	{
+		for(int j=0;j<4;j++)
+		{
+			parent[i][j] = rand() % 49 + 1;
+		}
+	}
+	return parent[100][4];
+}
+
+//This function is used for calculating the fitness 
+//fitness function is:w3 + x3 = y3 + z3 
+int calculateFitness(int fitness[100], int parent[100][4])
+{
+	int l=0,m=0;
+	for(int i=0;i<100;i++)
+	{
+		if (parent[i][0]==parent[i][1]==parent[i][2]==parent[i][3] || 
+			(parent[i][0]==parent[i][3] && parent[i][1]==parent[i][2]) || 
+			(parent[i][0]==parent[i][2] && parent[i][1]==parent[i][3]))
+		{
+			fitness[i]= INT_MAX;
+		}
+		else
+		{
+		l= parent[i][0]*parent[i][0]*parent[i][0]+parent[i][1]*parent[i][1]*parent[i][1];
+		m= parent[i][2]*parent[i][2]*parent[i][2]+parent[i][3]*parent[i][3]*parent[i][3];
+		fitness[i]=abs(l-m);
+		}
+	}
+	return fitness[100];
+}
+
+//This function finds the minimum in the fitness array and stores it 
+int calcBestFit(int fitness[100],int bestFit[4],int bestFitVal,int parent[100][4])
+{	
+	
+	for(int x=0;x<100;x++)
+	{
+		if(fitness[x]<bestFitVal)
+		{
+			bestFitVal=fitness[x];
+			fitness[x]=bestFitVal;
+			for(int a=0;a<4;a++)
+			{
+				bestFit[a]=parent[x][a];
+			}
+		}
+	}
+	return bestFitVal;
+}
+
+//This function is used for Selecting two parents
+int crossOver(int parent[100][4],int fitness[100],int crossover[100][4])
+{
+	
+	int p1[4],p2[4];
+	int a,b,c,d;
+//Selecting parent 1
+//First parent is chosen from first 50 rows
+//second parent is chosen from last 50 rows
+//just to make sure all the chromosomes are possible to select
+	for(int row=0;row<50;row++)
+	{
+		a= rand() % 49 + 0;
+		b= rand() % 49 + 50;
+		if(fitness[a]<fitness[b])
+		{
+			for(int m=0;m<4;m++)
+			{
+				p1[m]=parent[a][m];
+			}
+		}
+		else
+		{
+			for(int m=0;m<4;m++)
+			{
+				p1[m]=parent[b][m];
+			}
+		}
+//Selecting Parent 2
+//First parent is chosen from first 50 rows
+//second parent is chosen from last 50 rows
+//just to make sure all the chromosomes are possible to select
+
+		c= rand() % 49 + 0;
+		d= rand() % 49 + 50;
+		if(fitness[c]<fitness[d])
+		{
+			for(int m=0;m<4;m++)
+			{
+				p2[m]=parent[c][m];
+			}
+		}
+		else
+		{
+			for(int m=0;m<4;m++)
+			{
+				p2[m]=parent[d][m];
+			}
+		}
+		
+//finding the cross point
+		int n = rand() % 3;
+		int temp=0;
+//crossover of parents
+		for(int i=n;i<4;i++)
+		{
+			temp=p1[i];
+			p1[i]=p2[i];
+			p2[i]=temp;
+			temp++;
+		}
+//storing the crossed chromosomes in crossover array		
+		for(int y=0;y<4;y++)
+		{
+			crossover[row][y]=p1[y];
+			crossover[row+50][y]=p2[y];
+		}
+		
+}
+	return crossover[100][4];
+}
+
+//This function performs mutation on the crossover chromosome array
+int mutation(int crossover[100][4])
+{
+	int mut=(rand() % 5);
+	for(int i=0;i<mut;i++)
+	{
+		int row= rand() % 9;
+		int col= rand() % 3;
+		crossover[row][col]=crossover[col][row]+mut;
+	}
+	return crossover[100][4];
+}
+
+//This function copies the crossover array back into parent array
+int copytoparent(int parent[100][4], int crossover[100][4])
+{
+	
+	for(int i=0;i<100;i++)
+	{
+		for(int j=0;j<4;j++)
+		{
+			parent[i][j]=crossover[i][j];
+		}
+	}
+	return parent[100][4];
+}
+//This is the main functionwhere the program begins its execution
+int main()
+{
+	srand (unsigned (time(0)));
+	int parent[100][4];
+	int fitness[100];
+	int crossover[100][4];
+	int bestFit[4];
+	int bestFitVal=INT_MAX;
+	int count=0;
+	introduction();
+	fillParent(parent);
+	//Run the algorithm till we find a minfit value equal to zero or 1000000 runs
+	while(count<100000 && bestFitVal!=0)
+	{
+	calculateFitness(fitness,parent);
+	bestFitVal=calcBestFit(fitness,bestFit,bestFitVal,parent);
+	crossOver(parent,fitness,crossover);
+	mutation(crossover);
+	copytoparent(parent,crossover);
+	count++;
+	}
+	cout<<"\n\n BestFitVal is :"<<bestFitVal;
+	cout<<"\n \n BestFit Array:";
+	for(int y=0;y<4;y++)
+	{
+		cout<<bestFit[y]<<" ";
+	}
+	getchar();
+}

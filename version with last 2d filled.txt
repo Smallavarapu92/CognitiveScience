@@ -1,0 +1,211 @@
+//GA program for cognitive science
+#include<iostream>
+#include<time.h>
+#include<iomanip>
+using namespace std;
+
+//filling parent chromosomes
+int fillParent(int parent[10][4])
+{
+	for (int i=0;i<10;i++)
+	{
+		for(int j=0;j<4;j++)
+		{
+			parent[i][j] = rand()% 9;
+		}
+	}
+	return parent[10][4];
+}
+
+//calculating the fitness and finding the min of it
+int calculateFitness(int fitness[10], int parent[10][4],int bestFit[4],int bestFitVal)
+{
+	for(int a=0;a<10;a++)
+	{
+		int l= parent[a][0]*parent[a][0]*parent[a][0]+parent[a][1]*parent[a][1]*parent[a][1];
+		int m= parent[a][2]*parent[a][2]*parent[a][2]+parent[a][3]*parent[a][3]*parent[a][3];
+		fitness[a]=abs(l-m);
+		
+	}
+	//finding min and storing it 
+	int minfit=fitness[0];
+	int index=0;
+	for(int x=0;x<10;x++)
+	{
+		if(fitness[x]<minfit)
+		{
+			minfit=fitness[x];
+			index=x;
+			for(int a=0;a<4;a++)
+			{
+				bestFit[a]=parent[index][a];
+			}
+		}
+	}
+	return minfit;
+}
+
+//Selecting two parents
+int fillChildren(int parent[10][4],int fitness[10],int crossover[10][4])
+{
+	int p1[4],p2[4];
+	int a,b,c,d;
+//Selecting parent 1	
+	a= rand() % 4 + 0;
+		b= rand() % 3 + 5;
+		if(fitness[a]<fitness[b])
+		{
+			cout <<"\n the parent 1 is:";
+			for(int m=0;m<4;m++)
+			{
+				p1[m]=parent[a][m];
+				cout  << setw(5) << p1[m];
+			}
+		}
+		else
+		{
+			cout <<"\n the parent 1 is:";
+			for(int m=0;m<4;m++)
+			{
+				p1[m]=parent[b][m];
+				cout  << setw(5) << p1[m];
+			}
+		}
+//Selecting Parent 2
+		c= rand() % 4 + 0;
+		d= rand() % 3 + 5;
+		if(fitness[c]<fitness[d])
+		{
+			cout <<"\n the parent 2 is:";
+			for(int m=0;m<4;m++)
+			{
+				p2[m]=parent[c][m];
+				cout  << setw(5) << p2[m];
+			}
+		}
+		else
+		{
+			cout<<"\nparent 2 is : \n";
+			for(int m=0;m<4;m++)
+			{
+				p2[m]=parent[d][m];
+				cout  << setw(5) << p2[m];
+			}
+		}
+//finding the cross point
+		int n = rand() % 3 + 1;
+		cout<<"\n cross point is :"<<n;
+		int temp=0;
+//crossover of parents
+		for(int i=n;i<4;i++)
+		{
+			temp=p1[i];
+			p1[i]=p2[i-n];
+			p2[i-n]=temp;
+			temp=0;
+		}
+// storing the parents in crossover array
+	cout<<"\nthe crossed p1 is :"<<n;
+	for(int v=0;v<4;v++)
+	{
+		cout << setw(5) << p1[v];
+	}
+	cout<<"\nthe crossed p2 is :"<<n;
+	for(int v=0;v<4;v++)
+	{
+		cout << setw(5) << p2[v];
+	}
+
+for(int x=0;x<5;x++)
+{
+	for(int y=0;y<4;y++)
+	{
+			crossover[x][y]=p1[y];
+			crossover[x+5][y]=p2[y];
+		
+	}
+}
+cout<<"\n***********\n";
+for(int f=0;f<10;f++)
+{
+	for(int g=0;g<4;g++)
+	{
+		cout<<crossover[f][g]<<",";
+	}
+	cout<<"\n";
+}
+
+	return 1;
+}
+int main()
+{
+	//creating a parent chromosome array
+	//and filling it with random numbers till 50
+	srand (unsigned (time(0)));
+	cout<<"\nhello world\n";
+	int parent[10][4];
+	int fitness[10];
+	int crossover[10][4];
+	int bestFit[4];
+	int bestFitVal=999999999;
+	fillParent(parent);
+	bestFitVal=calculateFitness(fitness,parent,bestFit,bestFitVal);
+	fillChildren(parent,fitness,crossover);
+	getchar();
+}
+
+/*
+int a= rand() % 49 + 1;
+		int b= rand() % 100 + 50;
+		if(fitness[a]<fitness[b])
+		{
+			cout<<"\n PArent 1 is "<<fitness[a];
+		}
+		else
+		{
+		cout<<"\n PArent 1 is "<<fitness[b];
+		}
+		int c= rand() % 49 + 1;
+		int d= rand() % 100 + 50;
+		if(fitness[c]<fitness[d])
+		{
+		cout<<"\n Parent 2 is "<<fitness[c];
+		}
+		else
+		{
+		cout<<"\n Parent 2 is "<<fitness[d];
+		}*/
+	/*
+
+	//finding the chromosome with fitness = 0;
+	//for(int a=0;a<10;a++)
+	{
+		if(fitness[a]==0 ||fitness[a]==minfit )
+		{	
+			if(parent[a][0]==parent[a][1]==parent[a][2]==parent[a][3] || 
+			(parent[a][0]==parent[a][3] && parent[a][1]==parent[a][2]) || 
+			(parent[a][0]==parent[a][2] && parent[a][1]==parent[a][3]))
+			{
+				cout<<"No right fit\n";
+			}
+			else
+			{
+				cout<<"fitvalue is \t"<<fitness[a]<<" and\n";
+				cout<<"correspoding array is: "<<parent[a][0]<<" "<<parent[a][1]<<" "<<parent[a][2]<<" "<<parent[a][3]<<"\n";
+			}
+		}
+	}*/
+/*	//crossover the population
+	for(int k=0;k<5;k++)
+	{
+		int cross = rand() % 10 + 5;
+		crossover[k][0]=parent[k][0];
+		crossover[k][1]=parent[k][1];
+		crossover[k][2]=parent[cross][2];
+		crossover[k][3]=parent[cross][3];
+		crossover[cross][0]=parent[cross][0];
+		crossover[cross][1]=parent[cross][1];
+		crossover[cross][2]=parent[k][2];
+		crossover[cross][3]=parent[k][3];
+
+	}*/

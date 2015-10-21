@@ -1,0 +1,32 @@
+int fillChildren(int parent[10][4],int fitness[10],int crossover[10][4])
+{
+	
+		int a= rand() % 4 + 0;
+		int b= rand() % 3 + 5;
+		int c= rand() % 4 + 0;
+		int d= rand() % 3 + 5;
+		cout<<"\n a,b,c,d:"<<a<<","<<b<<","<<c<<","<<d;
+		cout<<"\n fitness is "<<fitness[a]<<","<<fitness[b]<<","<<fitness[c]<<","<<fitness[d];
+		if(fitness[a]<fitness[b]||fitness[c]<fitness[d])
+		{
+			cout<<"\n 1.Parent 1 is "<<a;
+			cout<<"\n 2. Parent 2 is "<<c;
+			cout<<"\n The parent 1 array correspoding to fitness is :"<<parent[a][0]<<","<<parent[a][1]<<","<<parent[a][2]<<","<<parent[a][3];
+			cout<<"\n The parent 2 array correspoding to fitness is :"<<parent[c][0]<<","<<parent[c][1]<<","<<parent[c][2]<<","<<parent[c][3];
+		}
+		else
+		{
+		cout<<"\n 1.Parent 1 is "<<b;
+		cout<<"\n 2.Parent 2 is "<<d;
+		cout<<"\n The parent 1 array correspoding to fitness is :"<<parent[b][0]<<","<<parent[b][1]<<","<<parent[b][2]<<","<<parent[b][3];
+		cout<<"\n The parent 2 array correspoding to fitness is :"<<parent[d][0]<<","<<parent[d][1]<<","<<parent[d][2]<<","<<parent[d][3];
+		
+		}
+		//finding the cross point
+
+		int crosspt=rand()% 4;
+		cout<<"\n cross point is :"<<crosspt;
+
+		
+	return crossover[10][4];
+}
